@@ -4,4 +4,5 @@ get 'trends' => 'films#trends'
 get 'casts/:id' => 'films#casts', as: 'casts'
 get 'search' => 'films#search', as: 'search'
 get 'lists' => 'films#lists', as: 'lists'
+post '/callback' => 'linebot#callback'
 end

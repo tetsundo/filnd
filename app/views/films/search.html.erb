@@ -1,8 +1,0 @@
-<div class="film_list">
-	<% @films.each do |film| %>
-	<p><%= link_to film['title'], casts_path(film['id'].to_i)%></p>
-	<% if film['poster_path'] != nil %>
-	<p><%= image_tag 'https://image.tmdb.org/t/p/w200'+ film['poster_path'] %></p>
-	<% end %>
-	<% end %>
-</div>
