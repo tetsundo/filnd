@@ -4,8 +4,8 @@ class LinebotController < ApplicationController
 	protect_from_forgery :except => [:callback]
 	def client
 		@client ||= Line::Bot::Client.new {|config|
-			config.channel_secret = BNV["LINE_CHANNEL_SECRET"]
-			config.channel_token = BNV["LINE_CAHNNEL_TOKEN"]
+			config.channel_secret = BNV["e27f25a17366cd741cd7e4ac2e796aaf"]
+			config.channel_token = BNV["xZ1EnlRogLOjX6FzTN1WYT7q/pzqzneIR0j/FE1bhZO1dY4VrJj2/Bfha3UsAsLhG58SjXZWJqRO0+Pn/vOwPjXpQL0oQE6z0vhIzx61s69IuIAziobQKdXPj2zKoB6knOejwHxlpv68JzNM/wbXFwdB04t89/1O/w1cDnyilFU="]
 		}
 	end
 
@@ -35,7 +35,7 @@ class LinebotController < ApplicationController
 		    end
 		    genre = event.message['text'] #ここでLINEで送った文章を取得
 			if genre != nil
-			  	lists = movies.select{|x|  x["genre_ids"].include?(@genre.to_i)}
+			  	lists = movies.select{|x|  x["genre_ids"].include?(genre.to_i)}
 			end
 			list = lists.sample # 任意のものを一つ選ぶ
 
