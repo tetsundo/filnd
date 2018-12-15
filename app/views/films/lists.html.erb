@@ -1,0 +1,8 @@
+<div class="favorite_list">
+	<% @lists.each do |list| %>
+	<p><%= link_to list['title'], casts_path(list['id'].to_i)%></p>
+	<% if list['poster_path'] != nil %>
+	<p><%= image_tag 'https://image.tmdb.org/t/p/w200'+ list['poster_path'] %></p>
+	<% end %>
+	<% end %>
+</div>

@@ -1,0 +1,20 @@
+
+<%= iframe = content_tag(
+    :iframe,
+    '', 
+    width: 560,
+    height: 315,
+    src: "https://www.youtube.com/embed/#{@video['key']}",
+    frameborder: 0,
+    allowfullscreen: true
+) %>
+	<%= @video['name'] %>
+
+
+<% @casts.each do |cast| %>
+<% if cast['profile_path'] != nil %>
+	<%= image_tag 'https://image.tmdb.org/t/p/w200'+ cast['profile_path'] %>
+	<%= cast['character'] %>
+	<%= cast['name'] %>
+	<%end%>
+<% end %>

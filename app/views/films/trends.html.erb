@@ -1,0 +1,8 @@
+<div class="trends_list">
+	<% @trends.each do |trend| %>
+	<p><%= link_to trend['title'], casts_path(trend['id'].to_i)%></p>
+	<% if trend['poster_path'] != nil %>
+	<p><%= image_tag 'https://image.tmdb.org/t/p/w200'+ trend['poster_path'] %></p>
+	<% end %>
+	<% end %>
+</div>
