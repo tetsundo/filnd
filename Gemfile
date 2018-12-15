@@ -66,3 +66,6 @@ gem 'nokogiri', require: 'nokogiri'
 gem 'pry-rails'
 gem 'jquery-rails'
 gem 'line-bot-api'
+group :production do
+  gem 'pg'
+end

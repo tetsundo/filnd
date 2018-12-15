@@ -20,13 +20,27 @@ class FilmsController < ApplicationController
 	end
 	def lists
 	  @genre = params[:genre]
-	  uri = URI.parse("https://api.themoviedb.org/4/list/97643?api_key=1f561d8e34d516d682a4d6c713fc7072&page=1")
+	  uri = URI.parse("https://api.themoviedb.org/4/list/97643?api_key=1f561d8e34d516d682a4d6c713fc7072")
 	  json = Net::HTTP.get(uri) #NET::HTTPを利用してAPOを叩く
-	  @results = JSON.parse(json) #返ってきたjsonデータをrubyの配列に変換
-	  @movies = @results['results']
+	  results = JSON.parse(json) #返ってきたjsonデータをrubyの配列に変換
+	  movies = []
+	  results['total_pages'].to_i.times do |f|
+	    	uri = URI.parse("https://api.themoviedb.org/4/list/97643?api_key=1f561d8e34d516d682a4d6c713fc7072&page=#{f+1}")
+	    	json = Net::HTTP.get(uri) #NET::HTTPを利用してAPOを叩く
+	    	results = JSON.parse(json) #返ってきたjsonデータをrubyの配列に変換
+	    	movies += results['results']
+	    end
 	  if @genre != nil
-	  	 @lists = @movies.select{|x|  x["genre_ids"].include?(@genre.to_i)}
+	  	 @lists = movies.select{|x|  x["genre_ids"].include?(@genre.to_i)}
 	  end
+	  	list = @lists.sample # 任意のものを一つ選ぶ
+	  	binding.pry
+		# listの詳細情報を取得する
+		uri = URI.parse("https://api.themoviedb.org/3/movie/#{list['id']}?api_key=1f561d8e34d516d682a4d6c713fc7072&append_to_response=videos")
+		json = Net::HTTP.get(uri) #NET::HTTPを利用してAPOを叩く
+	    results = JSON.parse(json) #返ってきたjsonデータをrubyの配列に変換
+	    video = results['videos']['results'][0]
+	  binding.pry
 	end
 	def casts
 	  uri = URI.parse("https://api.themoviedb.org/3/movie/#{params[:id]}?api_key=1f561d8e34d516d682a4d6c713fc7072&append_to_response=videos,credits")
