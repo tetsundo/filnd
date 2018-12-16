@@ -12,10 +12,10 @@ class LinebotController < ApplicationController
 	def callback
 		body = request.body.read
 
-		# signature = request.env['HTTP_X_LINE_SIGNATURE']
-		#  unless client.validate_signature(body, signature)
-		#    error 400 do 'Bad Request' end
-		#  end
+		signature = request.env['HTTP_X_LINE_SIGNATURE']
+		 unless client.validate_signature(body, signature)
+		   error 400 do 'Bad Request' end
+		 end
 
 		events = client.parse_events_from(body)
 
@@ -49,7 +49,6 @@ class LinebotController < ApplicationController
 			movie_score = list['vote_average']
 
 			response = "【タイトル】" + 	movie_title + "\n" + "【ジャンル】" + @genre
-			binding.pry
 			case event #case文　caseの値がwhenと一致する時にwhenの中の文章が実行される(switch文みたいなもの)
 			when Line::Bot::Event::Message
 				case event.type
@@ -58,7 +57,7 @@ class LinebotController < ApplicationController
 				 type: 'text',
 				 text: response
 				}
-				client.reply_message(event['replyToken'], message)
+				p client.reply_message(event['replyToken'], message)
 				end
 	        end
      	}
