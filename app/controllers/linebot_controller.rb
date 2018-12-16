@@ -49,7 +49,7 @@ class LinebotController < ApplicationController
 			case event #case文　caseの値がwhenと一致する時にwhenの中の文章が実行される(switch文みたいなもの)
 			when Line::Bot::Event::Message
 				case event.type
-				when Line::Bot::Event::MessageType::Text,Line::Bot::Event::MessageType::Location
+				when Line::Bot::Event::MessageType::Text
 				message = {
 				 type: 'text',
 				 text: response
