@@ -45,7 +45,7 @@ class LinebotController < ApplicationController
 			movie_title = list['title'] # 映画のタイトル
 			movie_score = list['vote_average']
 
-			response = "【タイトル】" + 	movie_title + "\n" + "【ジャンル】" + @genre + "\n" + "【平均スコア】" + movie_score + "\n" + video
+			response = "【タイトル】" + 	movie_title + "\n" + "【ジャンル】" + @genre + "\n"  + video
 			case event #case文　caseの値がwhenと一致する時にwhenの中の文章が実行される(switch文みたいなもの)
 			when Line::Bot::Event::Message
 				case event.type
