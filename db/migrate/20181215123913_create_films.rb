@@ -3,9 +3,9 @@ class CreateFilms < ActiveRecord::Migration[5.2]
     create_table :films do |t|
 
       t.timestamps
-      t.integer :genre_ids
       t.string :title
       t.integer :year
+      t.integer :genre
     end
   end
 end
