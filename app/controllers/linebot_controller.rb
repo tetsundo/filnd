@@ -30,7 +30,8 @@ class LinebotController < ApplicationController
 		    	results = JSON.parse(json) #返ってきたjsonデータをrubyの配列に変換
 		    	movies += results['results']
 		    end
-		    genre = Film.genres.event.message['text'] #ここでLINEで送った文章を取得
+		    genre = event.message['text'] #ここでLINEで送った文章を取得
+		    genre = Film.genres[genre]
 			lists = movies.select{|x|  x["genre_ids"].include?(genre.to_i)}
 			list = lists.sample # 任意のものを一つ選ぶ
 
