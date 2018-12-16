@@ -3,7 +3,7 @@ class LinebotController < ApplicationController
 	# callbackアクションのCSRFトークン認証を無効
 	protect_from_forgery :except => [:callback]
 	def client
-		@client ||= Line::Bot::Client.new {|config|
+		@client ||= Line::Bot::Client.new { |config|
 			config.channel_secret = ENV["e27f25a17366cd741cd7e4ac2e796aaf"]
 			config.channel_token = ENV["xZ1EnlRogLOjX6FzTN1WYT7q/pzqzneIR0j/FE1bhZO1dY4VrJj2/Bfha3UsAsLhG58SjXZWJqRO0+Pn/vOwPjXpQL0oQE6z0vhIzx61s69IuIAziobQKdXPj2zKoB6knOejwHxlpv68JzNM/wbXFwdB04t89/1O/w1cDnyilFU="]
 		}
