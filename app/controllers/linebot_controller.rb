@@ -4,8 +4,8 @@ class LinebotController < ApplicationController
 	protect_from_forgery except: :callback
 	def client
 		@client ||= Line::Bot::Client.new { |config|
-			config.channel_secret = "e27f25a17366cd741cd7e4ac2e796aaf"
-			config.channel_token = "k0thAK6Aj+sTnY9VhvKi3C/cmQn0ShcIV4Rch3S3fg42R171ThLyz2dinBFkvVdzG58SjXZWJqRO0+Pn/vOwPjXpQL0oQE6z0vhIzx61s6/9ATXxIC71KqRXe9AJsjuPDGgEdGAKRzgS8Vvtv5wM4gdB04t89/1O/w1cDnyilFU="
+			config.channel_secret = ENV["LINE_CHANNEL_SECRET"]
+			config.channel_token = ENV["LINE_CHANNEL_TOKEN"]
 		}
 	end
 
