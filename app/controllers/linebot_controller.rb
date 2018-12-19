@@ -34,8 +34,8 @@ class LinebotController < ApplicationController
 		    	movies += results['results']
 		    end
 		    @genre = event.message['text'] #ここでLINEで送った文章を取得
-		    genre = Film.genres[@genre]
-			lists = movies.select{|x|  x["genre_ids"].include?(genre.to_i)}
+		    genre_id = Film.genres[@genre]
+			lists = movies.select{|x|  x["genre_ids"].include?(genre_id.to_i)}
 			list = lists.sample # 任意のものを一つ選ぶ
 
 			# listの詳細情報を取得する
@@ -46,7 +46,7 @@ class LinebotController < ApplicationController
 			# 映画の情報
 			# video = "https://www.youtube.com/embed/#{results['videos']['results']['key']}" # 映画の予告動画のurlを送る
 			movie_title = list['title'] # 映画のタイトル
-			movie_score = list['vote_average']
+			# movie_score = list['vote_average']
 
 			response = "【タイトル】" + 	movie_title + "\n" + "【ジャンル】" + @genre
 			case event #case文　caseの値がwhenと一致する時にwhenの中の文章が実行される(switch文みたいなもの)
