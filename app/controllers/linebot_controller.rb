@@ -44,11 +44,11 @@ class LinebotController < ApplicationController
 		    results = JSON.parse(json) #返ってきたjsonデータをrubyの配列に変換
 
 			# 映画の情報
-			# # video = "https://www.youtube.com/embed/#{results['videos']['results']['key']}" # 映画の予告動画のurlを送る
+			video = "https://www.youtube.com/embed/#{results['videos']['results']['key']}" # 映画の予告動画のurlを送る
 			movie_title = list['title'] # 映画のタイトル
 			# # movie_score = list['vote_average']
 
-			response = "【タイトル】" + 	movie_title + "\n" + "【ジャンル】" + @genre
+			response = "【タイトル】" + 	movie_title + "\n" + "【ジャンル】" + @genre + "\n" + "【Youtube】" + video
 			case event #case文　caseの値がwhenと一致する時にwhenの中の文章が実行される(switch文みたいなもの)
 			when Line::Bot::Event::Message
 				case event.type
