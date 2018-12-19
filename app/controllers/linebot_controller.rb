@@ -56,7 +56,7 @@ class LinebotController < ApplicationController
 			json = Net::HTTP.get(uri) #NET::HTTPを利用してAPOを叩く
 		    results = JSON.parse(json) #返ってきたjsonデータをrubyの配列に変換
 			# 映画の情報
-			if ['videos']['results'][0]['key'] != nil
+			if results['videos']['results'] != nil
 				video = "https://www.youtube.com/embed/#{results['videos']['results'][0]['key']}" # 映画の予告動画のurlを送る
 			else
 				video = "見つかりませんでした"
