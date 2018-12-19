@@ -23,21 +23,34 @@ class LinebotController < ApplicationController
 		# messageのtext: 指定すると、返信する文字を決定することができる
 		# event.message['text']で送られてきたメッセージを取得することができる
 		events.each {|event|
-		    uri = URI.parse("https://api.themoviedb.org/4/list/97643?api_key=1f561d8e34d516d682a4d6c713fc7072")
-		    json = Net::HTTP.get(uri) #NET::HTTPを利用してAPOを叩く
-		    results = JSON.parse(json) #返ってきたjsonデータをrubyの配列に変換
-		    movies = []
-		  	results['total_pages'].to_i.times do |f|
-		    	uri = URI.parse("https://api.themoviedb.org/4/list/97643?api_key=1f561d8e34d516d682a4d6c713fc7072&page=#{f+1}")
-		    	json = Net::HTTP.get(uri) #NET::HTTPを利用してAPOを叩く
-		    	results = JSON.parse(json) #返ってきたjsonデータをrubyの配列に変換
-		    	movies += results['results']
-		    end
-		    @genre = event.message['text'].gsub(" ", "") #ここでLINEで送った文章を取得。空白はAPI通信の妨げになるので削除
-		    genre_id = Film.genres[@genre]
-			lists = movies.select{|x|  x["genre_ids"].include?(genre_id.to_i)}
+			@genre = event.message['text'].gsub(" ", "") #ここでLINEで送った文章を取得。空白はAPI通信の妨げになるので削除
+			if @genre == "クリスマス"
+				uri = URI.parse("https://api.themoviedb.org/4/list/98595?api_key=1f561d8e34d516d682a4d6c713fc7072")
+			    json = Net::HTTP.get(uri) #NET::HTTPを利用してAPOを叩く
+			    results = JSON.parse(json) #返ってきたjsonデータをrubyの配列に変換
+			    movies = []
+			  	results['total_pages'].to_i.times do |f|
+			    	uri = URI.parse("https://api.themoviedb.org/4/list/98595?api_key=1f561d8e34d516d682a4d6c713fc7072&page=#{f+1}")
+			    	json = Net::HTTP.get(uri) #NET::HTTPを利用してAPOを叩く
+			    	results = JSON.parse(json) #返ってきたjsonデータをrubyの配列に変換
+			    	movies += results['results']
+			    end
+			    lists = movies
+			else
+			    uri = URI.parse("https://api.themoviedb.org/4/list/97643?api_key=1f561d8e34d516d682a4d6c713fc7072")
+			    json = Net::HTTP.get(uri) #NET::HTTPを利用してAPOを叩く
+			    results = JSON.parse(json) #返ってきたjsonデータをrubyの配列に変換
+			    movies = []
+			  	results['total_pages'].to_i.times do |f|
+			    	uri = URI.parse("https://api.themoviedb.org/4/list/97643?api_key=1f561d8e34d516d682a4d6c713fc7072&page=#{f+1}")
+			    	json = Net::HTTP.get(uri) #NET::HTTPを利用してAPOを叩く
+			    	results = JSON.parse(json) #返ってきたjsonデータをrubyの配列に変換
+			    	movies += results['results']
+			    end
+			    genre_id = Film.genres[@genre]
+				lists = movies.select{|x|  x["genre_ids"].include?(genre_id.to_i)}
+			end
 			list = lists.sample # 任意のものを一つ選ぶ
-
 			# listの詳細情報を取得する
 			uri = URI.parse("https://api.themoviedb.org/3/movie/#{list['id']}?api_key=1f561d8e34d516d682a4d6c713fc7072&append_to_response=videos")
 			json = Net::HTTP.get(uri) #NET::HTTPを利用してAPOを叩く
