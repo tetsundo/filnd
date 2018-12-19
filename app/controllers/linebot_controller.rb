@@ -55,9 +55,12 @@ class LinebotController < ApplicationController
 			uri = URI.parse("https://api.themoviedb.org/3/movie/#{list['id']}?api_key=1f561d8e34d516d682a4d6c713fc7072&append_to_response=videos")
 			json = Net::HTTP.get(uri) #NET::HTTPを利用してAPOを叩く
 		    results = JSON.parse(json) #返ってきたjsonデータをrubyの配列に変換
-
 			# 映画の情報
-			video = "https://www.youtube.com/embed/#{results['videos']['results'][0]['key']}" # 映画の予告動画のurlを送る
+			if ['videos']['results'][0]['key'] != nil
+				video = "https://www.youtube.com/embed/#{results['videos']['results'][0]['key']}" # 映画の予告動画のurlを送る
+			else
+				video = "見つかりませんでした"
+			end
 			movie_title = list['original_title'] # 映画のタイトル
 			movie_score = list['vote_average'].to_s
 
