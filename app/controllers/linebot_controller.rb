@@ -44,7 +44,7 @@ class LinebotController < ApplicationController
 		    results = JSON.parse(json) #返ってきたjsonデータをrubyの配列に変換
 
 			# 映画の情報
-			video = "https://www.youtube.com/embed/#{results['videos']['results']['key']}" # 映画の予告動画のurlを送る
+			video = "https://www.youtube.com/embed/#{results['videos']['results'][0]['key']}" # 映画の予告動画のurlを送る
 			movie_title = list['title'] # 映画のタイトル
 			# # movie_score = list['vote_average']
 

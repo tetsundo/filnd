@@ -48,6 +48,7 @@ class FilmsController < ApplicationController
 	  @results = JSON.parse(json) #返ってきたjsonデータをrubyの配列に変換
 	  @video = @results['videos']['results'][0]
 	  @casts = @results['credits']['cast']
+	  binding.pry
 	end
 
 	def trends
