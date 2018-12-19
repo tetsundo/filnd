@@ -1,13 +1,7 @@
 class LinebotController < ApplicationController
 	require 'line/bot'	# gem 'line-bot-api'
 	# callbackアクションのCSRFトークン認証を無効
-	protect_from_forgery :except => [:callback]
-	def client
-		@client ||= Line::Bot::Client.new { |config|
-			config.channel_secret = ENV["e27f25a17366cd741cd7e4ac2e796aaf"]
-			config.channel_token = ENV["xZ1EnlRogLOjX6FzTN1WYT7q/pzqzneIR0j/FE1bhZO1dY4VrJj2/Bfha3UsAsLhG58SjXZWJqRO0+Pn/vOwPjXpQL0oQE6z0vhIzx61s69IuIAziobQKdXPj2zKoB6knOejwHxlpv68JzNM/wbXFwdB04t89/1O/w1cDnyilFU="]
-		}
-	end
+	protect_from_forgery except: :callback
 
 	def callback
 		body = request.body.read
@@ -23,46 +17,56 @@ class LinebotController < ApplicationController
 		# messageのtext: 指定すると、返信する文字を決定することができる
 		# event.message['text']で送られてきたメッセージを取得することができる
 		events.each {|event|
-		    uri = URI.parse("https://api.themoviedb.org/4/list/97643?api_key=1f561d8e34d516d682a4d6c713fc7072")
-		    json = Net::HTTP.get(uri) #NET::HTTPを利用してAPOを叩く
-		    results = JSON.parse(json) #返ってきたjsonデータをrubyの配列に変換
-		    movies = []
-		  	results['total_pages'].to_i.times do |f|
-		    	uri = URI.parse("https://api.themoviedb.org/4/list/97643?api_key=1f561d8e34d516d682a4d6c713fc7072&page=#{f+1}")
-		    	json = Net::HTTP.get(uri) #NET::HTTPを利用してAPOを叩く
-		    	results = JSON.parse(json) #返ってきたjsonデータをrubyの配列に変換
-		    	movies += results['results']
-		    end
-		    @genre = event.message['text'] #ここでLINEで送った文章を取得
-		    genre_id = Film.genres[@genre]
-			lists = movies.select{|x|  x["genre_ids"].include?(genre_id.to_i)}
-			list = lists.sample # 任意のものを一つ選ぶ
+		 #    uri = URI.parse("https://api.themoviedb.org/4/list/97643?api_key=1f561d8e34d516d682a4d6c713fc7072")
+		 #    json = Net::HTTP.get(uri) #NET::HTTPを利用してAPOを叩く
+		 #    results = JSON.parse(json) #返ってきたjsonデータをrubyの配列に変換
+		 #    movies = []
+		 #  	results['total_pages'].to_i.times do |f|
+		 #    	uri = URI.parse("https://api.themoviedb.org/4/list/97643?api_key=1f561d8e34d516d682a4d6c713fc7072&page=#{f+1}")
+		 #    	json = Net::HTTP.get(uri) #NET::HTTPを利用してAPOを叩く
+		 #    	results = JSON.parse(json) #返ってきたjsonデータをrubyの配列に変換
+		 #    	movies += results['results']
+		 #    end
+		 #    @genre = event.message['text'] #ここでLINEで送った文章を取得
+		 #    genre_id = Film.genres[@genre]
+			# lists = movies.select{|x|  x["genre_ids"].include?(genre_id.to_i)}
+			# list = lists.sample # 任意のものを一つ選ぶ
 
-			# listの詳細情報を取得する
-			uri = URI.parse("https://api.themoviedb.org/3/movie/#{list['id']}?api_key=1f561d8e34d516d682a4d6c713fc7072&append_to_response=videos")
-			json = Net::HTTP.get(uri) #NET::HTTPを利用してAPOを叩く
-		    results = JSON.parse(json) #返ってきたjsonデータをrubyの配列に変換
+			# # listの詳細情報を取得する
+			# uri = URI.parse("https://api.themoviedb.org/3/movie/#{list['id']}?api_key=1f561d8e34d516d682a4d6c713fc7072&append_to_response=videos")
+			# json = Net::HTTP.get(uri) #NET::HTTPを利用してAPOを叩く
+		 #    results = JSON.parse(json) #返ってきたjsonデータをrubyの配列に変換
 
-			# 映画の情報
-			# video = "https://www.youtube.com/embed/#{results['videos']['results']['key']}" # 映画の予告動画のurlを送る
-			movie_title = list['title'] # 映画のタイトル
-			# movie_score = list['vote_average']
+			# # 映画の情報
+			# # video = "https://www.youtube.com/embed/#{results['videos']['results']['key']}" # 映画の予告動画のurlを送る
+			# movie_title = list['title'] # 映画のタイトル
+			# # movie_score = list['vote_average']
 
-			response = "【タイトル】" + 	movie_title + "\n" + "【ジャンル】" + @genre
+			# response = "【タイトル】" + 	movie_title + "\n" + "【ジャンル】" + @genre
 			case event #case文　caseの値がwhenと一致する時にwhenの中の文章が実行される(switch文みたいなもの)
 			when Line::Bot::Event::Message
 				case event.type
 				when Line::Bot::Event::MessageType::Text
-				message = {
-				 type: 'text',
-				 text: response
-				}
-				p client.reply_message(event['replyToken'], message)
+				  message = {
+					 type: 'text',
+					 # text: response
+					 text: event.message['text']
+				  }
+				  client.reply_message(event['replyToken'], message)
 				end
 	        end
      	}
 
      	head :ok
     end
+
+	private
+
+	def client
+		@client ||= Line::Bot::Client.new { |config|
+			config.channel_secret = ENV["e27f25a17366cd741cd7e4ac2e796aaf"]
+			config.channel_token = ENV["xZ1EnlRogLOjX6FzTN1WYT7q/pzqzneIR0j/FE1bhZO1dY4VrJj2/Bfha3UsAsLhG58SjXZWJqRO0+Pn/vOwPjXpQL0oQE6z0vhIzx61s69IuIAziobQKdXPj2zKoB6knOejwHxlpv68JzNM/wbXFwdB04t89/1O/w1cDnyilFU="]
+		}
+	end
 
 end
