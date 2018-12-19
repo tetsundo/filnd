@@ -45,7 +45,7 @@ class LinebotController < ApplicationController
 
 			# 映画の情報
 			video = "https://www.youtube.com/embed/#{results['videos']['results'][0]['key']}" # 映画の予告動画のurlを送る
-			movie_title = list['title'] # 映画のタイトル
+			movie_title = list['original_title'] # 映画のタイトル
 			movie_score = list['vote_average'].to_s
 
 			response = "【タイトル】" + 	movie_title + "\n" + "【ジャンル】" + @genre + "\n" + "【スコア】" + movie_score + "\n" + "【Youtube】" + video

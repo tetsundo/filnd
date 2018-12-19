@@ -17,6 +17,7 @@ class FilmsController < ApplicationController
 	    @results = JSON.parse(json) #返ってきたjsonデータをrubyの配列に変換
 	    @films = @results['results']
 	  end
+	  binding.pry
 	end
 	def lists
 	  @genre = params[:genre]
