@@ -24,11 +24,11 @@ class LinebotController < ApplicationController
 		# event.message['text']で送られてきたメッセージを取得することができる
 		events.each {|event|
 			@genre = event.message['text'].gsub(" ", "") #ここでLINEで送った文章を取得。空白はAPI通信の妨げになるので削除
+			uri = URI.parse("https://api.themoviedb.org/4/list/98595?api_key=1f561d8e34d516d682a4d6c713fc7072")
+			json = Net::HTTP.get(uri) #NET::HTTPを利用してAPOを叩く
+			results = JSON.parse(json) #返ってきたjsonデータをrubyの配列に変換
+			movies = []
 			if @genre == "クリスマス"
-				uri = URI.parse("https://api.themoviedb.org/4/list/98595?api_key=1f561d8e34d516d682a4d6c713fc7072")
-			    json = Net::HTTP.get(uri) #NET::HTTPを利用してAPOを叩く
-			    results = JSON.parse(json) #返ってきたjsonデータをrubyの配列に変換
-			    movies = []
 			  	results['total_pages'].to_i.times do |f|
 			    	uri = URI.parse("https://api.themoviedb.org/4/list/98595?api_key=1f561d8e34d516d682a4d6c713fc7072&page=#{f+1}")
 			    	json = Net::HTTP.get(uri) #NET::HTTPを利用してAPOを叩く
@@ -37,10 +37,6 @@ class LinebotController < ApplicationController
 			    end
 			    lists = movies
 			else
-			    uri = URI.parse("https://api.themoviedb.org/4/list/97643?api_key=1f561d8e34d516d682a4d6c713fc7072")
-			    json = Net::HTTP.get(uri) #NET::HTTPを利用してAPOを叩く
-			    results = JSON.parse(json) #返ってきたjsonデータをrubyの配列に変換
-			    movies = []
 			  	results['total_pages'].to_i.times do |f|
 			    	uri = URI.parse("https://api.themoviedb.org/4/list/97643?api_key=1f561d8e34d516d682a4d6c713fc7072&page=#{f+1}")
 			    	json = Net::HTTP.get(uri) #NET::HTTPを利用してAPOを叩く
@@ -55,6 +51,13 @@ class LinebotController < ApplicationController
 			uri = URI.parse("https://api.themoviedb.org/3/movie/#{list['id']}?api_key=1f561d8e34d516d682a4d6c713fc7072&append_to_response=videos")
 			json = Net::HTTP.get(uri) #NET::HTTPを利用してAPOを叩く
 		    results = JSON.parse(json) #返ってきたjsonデータをrubyの配列に変換
+
+
+
+
+
+
+
 			# 映画の情報
 			if results['videos']['results'] != nil
 				video = "https://www.youtube.com/embed/#{results['videos']['results'][0]['key']}" # 映画の予告動画のurlを送る
